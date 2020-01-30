@@ -1,7 +1,8 @@
 import cv2
 import open3d as o3d
 import matplotlib.pyplot as plt
-from projections.geometry_utils import *
+import numpy as np
+from geometry_utils import *
 
 # Load images
 rgb = cv2.cvtColor(cv2.imread('data/rgb.png'), cv2.COLOR_BGR2RGB)

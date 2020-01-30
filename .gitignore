@@ -125,3 +125,4 @@ dmypy.json
 .idea/
 results/
 
+.DS_Store
