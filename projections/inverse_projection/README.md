@@ -7,3 +7,9 @@ open3d is used for visualising the point clouds
 ```
 pip install open3d
 ```
+## How to use
+```
+python inverse_project.py
+```
+
+![diagram](./data/backproject_diagram.png)
