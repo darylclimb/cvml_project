@@ -1,8 +1,8 @@
 import os
 
 import matplotlib.pyplot as plt
-
-from projections.lidar_camera_projection.utils import *
+import numpy as np
+from utils import *
 
 
 def render_image_with_boxes(img, objects, calib):
@@ -20,6 +20,8 @@ def render_image_with_boxes(img, objects, calib):
         img1 = draw_projected_box3d(img1, box3d_pixelcoord)
 
     plt.imshow(img1)
+    plt.yticks([])
+    plt.xticks([])
     plt.show()
 
 
@@ -88,6 +90,8 @@ def render_lidar_on_image(pts_velo, img, calib, img_width, img_height):
                          int(np.round(imgfov_pc_pixel[1, i]))),
                    2, color=tuple(color), thickness=-1)
     plt.imshow(img)
+    plt.yticks([])
+    plt.xticks([])
     plt.show()
     return img
 

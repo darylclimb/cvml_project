@@ -1,0 +1,10 @@
+name: cam_lidar
+channels:
+    - defaults
+    - conda-forge
+dependencies:
+    - python=3.7.*
+    - anaconda
+    - mayavi
+    - pip:
+        - opencv-python

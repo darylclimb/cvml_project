@@ -211,7 +211,7 @@ def draw_gt_boxes3d(gt_boxes3d, fig, color=(1, 1, 1)):
     return fig
 
 
-def draw_projected_box3d(image, qs, color=(1, 1, 1), thickness=1):
+def draw_projected_box3d(image, qs, color=(255, 255, 255), thickness=1):
     qs = qs.astype(np.int32).transpose()
     for k in range(0, 4):
         # http://docs.enthought.com/mayavi/mayavi/auto/mlab_helper_functions.html
