@@ -188,7 +188,7 @@ def roty(t):
 # =========================================================
 # Drawing tool
 # =========================================================
-def draw_gt_boxes3d(gt_boxes3d, fig, color=(0, 0, 0)):
+def draw_gt_boxes3d(gt_boxes3d, fig, color=(1, 1, 1)):
     """
     Draw 3D bounding boxes
     Args:
