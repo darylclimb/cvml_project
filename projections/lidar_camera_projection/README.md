@@ -11,3 +11,12 @@ conda env create -f requirement.text
 ```
 python lidar_camera_project.py
 ```
+
+#### Image 3D boxes
+![diagram](./assets/1.png)
+
+#### Lidar Points Image
+![diagram](./assets/2.png)
+
+#### Lidar 3D boxes
+![diagram](./assets/3.png)

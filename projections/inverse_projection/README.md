@@ -12,4 +12,5 @@ pip install open3d
 python inverse_project.py
 ```
 
+#### Diagram
 ![diagram](./data/backproject_diagram.png)
