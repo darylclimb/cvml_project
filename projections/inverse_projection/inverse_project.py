@@ -1,7 +1,7 @@
 import cv2
-import open3d as o3d
 import matplotlib.pyplot as plt
 import numpy as np
+import open3d as o3d
 from geometry_utils import *
 
 # Load images
@@ -51,6 +51,7 @@ pcd_cam.points = o3d.utility.Vector3dVector(cam_coords.T[:, :3])
 pcd_cam.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
 o3d.visualization.draw_geometries([pcd_cam])
 
+
 def project_topview(cam_points):
     """
     Draw the topview projection
@@ -83,6 +84,7 @@ def project_topview(cam_points):
 
     plt.gca().set_aspect('equal')
     plt.show()
+
 
 # Do top view projection
 project_topview(cam_coords)

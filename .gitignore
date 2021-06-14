@@ -126,3 +126,4 @@ dmypy.json
 results/
 
 .DS_Store
+ignore/

@@ -13,4 +13,4 @@ python inverse_project.py
 ```
 
 #### Diagram
-![diagram](./data/backproject_diagram.png)
+![diagram](resource/backproject_diagram.png)
