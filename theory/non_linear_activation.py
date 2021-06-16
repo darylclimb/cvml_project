@@ -25,24 +25,25 @@ def forward(x: torch.Tensor, activation_fn):
     return grad, act.detach()
 
 
-activation_functions = [
-    torch.sigmoid,
-    torch.tanh,
-    F.relu,
-    F.leaky_relu,
-    F.gelu,
-    mish,
-    swish
-]
+if __name__ == '__main__':
+    activation_functions = [
+        torch.sigmoid,
+        torch.tanh,
+        F.relu,
+        F.leaky_relu,
+        F.gelu,
+        mish,
+        swish
+    ]
 
-for act_fn in activation_functions:
-    x = torch.arange(-5, 5, 0.1)
+    for act_fn in activation_functions:
+        x = torch.arange(-5, 5, 0.1)
 
-    grad, y = forward(x, act_fn)
-    plt.figure()
-    plt.plot(x, y)
-    plt.plot(x, grad)
-    plt.title(act_fn.__name__)
-    plt.legend([f'z = {act_fn.__name__}(x)', 'gradient'])
+        grad, y = forward(x, act_fn)
+        plt.figure()
+        plt.plot(x, y)
+        plt.plot(x, grad)
+        plt.title(act_fn.__name__)
+        plt.legend([f'z = {act_fn.__name__}(x)', 'gradient'])
 
-plt.show()
+    plt.show()
