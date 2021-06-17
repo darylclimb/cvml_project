@@ -8,6 +8,9 @@ TARGET_H, TARGET_W = 500, 500
 
 
 def ipm_from_parameters(image, xyz, K, RT):
+    # Flip y points positive upwards
+    xyz[1] = -xyz[1]
+
     P = K @ RT
     pixel_coords = perspective(xyz, P, TARGET_H, TARGET_W)
     image2 = bilinear_sampler(image, pixel_coords)
@@ -60,5 +63,5 @@ if __name__ == '__main__':
     ax[1].set_title('IPM')
     ax[2].imshow(warped2)
     ax[2].set_title('IPM from OpenCv')
-
+    plt.tight_layout()
     plt.show()

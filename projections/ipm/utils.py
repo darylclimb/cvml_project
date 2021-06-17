@@ -74,10 +74,10 @@ def load_camera_params(file):
     T_veh2cam = translation_matrix((-x, -y, -z))
 
     # Rotate to camera coodinates
-    R = np.transpose(np.array([[0., 0., 1., 0.],
-                               [1., 0., 0., 0.],
-                               [0., -1., 0., 0.],
-                               [0., 0., 0., 1.]]))
+    R = np.array([[0., -1., 0., 0.],
+                  [0., 0., -1., 0.],
+                  [1., 0., 0., 0.],
+                  [0., 0., 0., 1.]])
 
     RT = R @ R_veh2cam @ T_veh2cam
     return RT, K
