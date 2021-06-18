@@ -20,6 +20,12 @@ PyTorch + Anaconda packages
     Test the effect of regularization on weights.
     
     Note: L1/L2 induce sparsity with greater effect in L1. Connection weights -> 0, deactivating neurons. Reducing overfitting.
+
     ![diagram](resource/reg1.jpg)    
-        
-    
+
+- [Weight Initialization](weight_init.py)
+    Careful weight initialization schemes prevents vanishing or exploding gradient.
+
+    More info: https://www.deeplearning.ai/ai-notes/initialization/       
+
+    ![diagram](resource/init.jpeg)    
