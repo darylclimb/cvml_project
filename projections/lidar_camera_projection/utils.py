@@ -81,7 +81,7 @@ def project_cam2_to_velo(calib):
     velo2cam_ref = np.vstack((calib['Tr_velo_to_cam'].reshape(3, 4), np.array([0., 0., 0., 1.])))  # velo2ref_cam
     P_cam_ref2velo = np.linalg.inv(velo2cam_ref)
 
-    proj_mat = R_ref2rect_inv @ P_cam_ref2velo
+    proj_mat = P_cam_ref2velo @ R_ref2rect_inv
     return proj_mat
 
 
@@ -188,29 +188,6 @@ def roty(t):
 # =========================================================
 # Drawing tool
 # =========================================================
-def draw_gt_boxes3d(gt_boxes3d, fig, color=(1, 1, 1)):
-    """
-    Draw 3D bounding boxes
-    Args:
-        gt_boxes3d: numpy array (3,8) for XYZs of the box corners
-        fig: figure handler
-        color: RGB value tuple in range (0,1), box line color
-    """
-    for k in range(0, 4):
-        i, j = k, (k + 1) % 4
-        mlab.plot3d([gt_boxes3d[0, i], gt_boxes3d[0, j]], [gt_boxes3d[1, i], gt_boxes3d[1, j]],
-                    [gt_boxes3d[2, i], gt_boxes3d[2, j]], tube_radius=None, line_width=2, color=color, figure=fig)
-
-        i, j = k + 4, (k + 1) % 4 + 4
-        mlab.plot3d([gt_boxes3d[0, i], gt_boxes3d[0, j]], [gt_boxes3d[1, i], gt_boxes3d[1, j]],
-                    [gt_boxes3d[2, i], gt_boxes3d[2, j]], tube_radius=None, line_width=2, color=color, figure=fig)
-
-        i, j = k, k + 4
-        mlab.plot3d([gt_boxes3d[0, i], gt_boxes3d[0, j]], [gt_boxes3d[1, i], gt_boxes3d[1, j]],
-                    [gt_boxes3d[2, i], gt_boxes3d[2, j]], tube_radius=None, line_width=2, color=color, figure=fig)
-    return fig
-
-
 def draw_projected_box3d(image, qs, color=(255, 255, 255), thickness=1):
     qs = qs.astype(np.int32).transpose()
     for k in range(0, 4):
@@ -225,46 +202,3 @@ def draw_projected_box3d(image, qs, color=(255, 255, 255), thickness=1):
         cv2.line(image, (qs[i, 0], qs[i, 1]), (qs[j, 0], qs[j, 1]), color, thickness, cv2.LINE_AA)
 
     return image
-
-
-def draw_lidar(pc, color=None, fig=None, bgcolor=(0, 0, 0), pts_scale=1, pts_mode='point', pts_color=None):
-    """
-    Add lidar points
-    Args:
-        pc: point cloud xyz [npoints, 3]
-        color:
-        fig: fig handler
-    Returns:
-
-    """
-    ''' Draw lidar points
-    Args:
-        pc: numpy array (n,3) of XYZ
-        color: numpy array (n) of intensity or whatever
-        fig: mayavi figure handler, if None create new one otherwise will use it
-    Returns:
-        fig: created or used fig
-    '''
-    if fig is None:
-        fig = mlab.figure(figure=None, bgcolor=bgcolor, fgcolor=None, engine=None, size=(1600, 1000))
-    if color is None:
-        color = pc[:, 2]
-
-    # add points
-    mlab.points3d(pc[:, 0], pc[:, 1], pc[:, 2], color, color=pts_color, mode=pts_mode, colormap='gnuplot',
-                  scale_factor=pts_scale, figure=fig)
-
-    # # draw origin
-    # mlab.points3d(0, 0, 0, color=(1, 1, 1), mode='sphere', scale_factor=0.2)
-
-    # draw axis
-    axes = np.array([
-        [2., 0., 0., 0.],
-        [0., 2., 0., 0.],
-        [0., 0., 2., 0.],
-    ], dtype=np.float64)
-    mlab.plot3d([0, axes[0, 0]], [0, axes[0, 1]], [0, axes[0, 2]], color=(1, 0, 0), tube_radius=None, figure=fig)
-    mlab.plot3d([0, axes[1, 0]], [0, axes[1, 1]], [0, axes[1, 2]], color=(0, 1, 0), tube_radius=None, figure=fig)
-    mlab.plot3d([0, axes[2, 0]], [0, axes[2, 1]], [0, axes[2, 2]], color=(0, 0, 1), tube_radius=None, figure=fig)
-
-    return fig

@@ -1,7 +1,8 @@
 import os
 
 import matplotlib.pyplot as plt
-import numpy as np
+import open3d
+
 from utils import *
 
 
@@ -39,10 +40,11 @@ def render_lidar_with_boxes(pc_velo, objects, calib, img_width, img_height):
                     )[0]
     imgfov_pc_velo = pc_velo[inds, :]
 
-    fig = mlab.figure(figure=None, bgcolor=(0, 0, 0),
-                      fgcolor=None, engine=None, size=(1000, 500))
-
-    draw_lidar(imgfov_pc_velo, fig=fig)
+    # create open3d point cloud and axis
+    mesh_frame = open3d.geometry.TriangleMesh.create_coordinate_frame(size=2, origin=[0, 0, 0])
+    pcd = open3d.geometry.PointCloud()
+    pcd.points = open3d.utility.Vector3dVector(imgfov_pc_velo)
+    entities_to_draw = [pcd, mesh_frame]
 
     # Projection matrix
     proj_cam2_2_velo = project_cam2_to_velo(calib)
@@ -51,12 +53,23 @@ def render_lidar_with_boxes(pc_velo, objects, calib, img_width, img_height):
     for obj in objects:
         if obj.type == 'DontCare':
             continue
+
         # Project boxes from camera to lidar coordinate
         boxes3d_pts = project_camera_to_lidar(obj.in_camera_coordinate(), proj_cam2_2_velo)
 
-        # Draw boxes
-        draw_gt_boxes3d(boxes3d_pts, fig=fig)
-    mlab.show()
+        # Open3d boxes
+        boxes3d_pts = open3d.utility.Vector3dVector(boxes3d_pts.T)
+        box = open3d.geometry.OrientedBoundingBox.create_from_points(boxes3d_pts)
+        box.color = [1, 0, 0]
+        entities_to_draw.append(box)
+
+    # Draw
+    open3d.visualization.draw_geometries([*entities_to_draw],
+                                         front=[-0.9945, 0.03873, 0.0970],
+                                         lookat=[38.4120, 0.6139, 0.48500],
+                                         up=[0.095457, -0.0421, 0.99453],
+                                         zoom=0.33799
+                                         )
 
 
 def render_lidar_on_image(pts_velo, img, calib, img_width, img_height):
@@ -110,6 +123,26 @@ if __name__ == '__main__':
     # Load Lidar PC
     pc_velo = load_velo_scan('data/000114.bin')[:, :3]
 
-    render_image_with_boxes(rgb, labels, calib)
+    # render_image_with_boxes(rgb, labels, calib)
     render_lidar_with_boxes(pc_velo, labels, calib, img_width=img_width, img_height=img_height)
-    render_lidar_on_image(pc_velo, rgb, calib, img_width, img_height)
+    # render_lidar_on_image(pc_velo, rgb, calib, img_width, img_height)
+
+{
+    "class_name": "ViewTrajectory",
+    "interval": 29,
+    "is_loop": false,
+    "trajectory":
+        [
+            {
+                "boundingbox_max": [76.944000244140625, 20.33799934387207, 2.815000057220459],
+                "boundingbox_min": [-0.12, -19.110000610351562, -1.8450000286102295],
+                "field_of_view": 60.0,
+                "front": [-0.99452074397047185, 0.038735911320214068, 0.09709798652192439],
+                "lookat": [38.41200012207031, 0.61399936676025391, 0.48500001430511475],
+                "up": [0.095457276697515733, -0.042172005434831683, 0.99453980829482069],
+                "zoom": 0.33799999999999963
+            }
+        ],
+    "version_major": 1,
+    "version_minor": 0
+}
