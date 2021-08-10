@@ -5,3 +5,5 @@ Detailed explanation of implementation [here](https://medium.com/@daryl.tanyj/a-
 ```
 python ipm.py
 ```
+
+![diagram](resource/Figure_1.jpg)

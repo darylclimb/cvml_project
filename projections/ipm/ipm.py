@@ -1,19 +1,21 @@
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-from utils import perspective, Plane, load_camera_params, bilinear_sampler
+
+from utils import perspective, Plane, load_camera_params, bilinear_sampler, warped
 
 image = cv2.cvtColor(cv2.imread('stuttgart_01_000000_003715_leftImg8bit.png'), cv2.COLOR_BGR2RGB)
+interpolation_fn = bilinear_sampler  # or warped
 TARGET_H, TARGET_W = 500, 500
 
 
-def ipm_from_parameters(image, xyz, K, RT):
+def ipm_from_parameters(image, xyz, K, RT, interpolation_fn):
     # Flip y points positive upwards
     xyz[1] = -xyz[1]
 
     P = K @ RT
     pixel_coords = perspective(xyz, P, TARGET_H, TARGET_W)
-    image2 = bilinear_sampler(image, pixel_coords)
+    image2 = interpolation_fn(image, pixel_coords)
     return image2.astype(np.uint8)
 
 
@@ -25,6 +27,7 @@ def ipm_from_opencv(image, source_points, target_points):
                                  borderValue=0)
     return warped
 
+
 if __name__ == '__main__':
     ################
     # Derived method
@@ -34,7 +37,7 @@ if __name__ == '__main__':
     # Retrieve camera parameters
     extrinsic, intrinsic = load_camera_params('camera.json')
     # Apply perspective transformation
-    warped1 = ipm_from_parameters(image, plane.xyz, intrinsic, extrinsic)
+    warped1 = ipm_from_parameters(image, plane.xyz, intrinsic, extrinsic, interpolation_fn)
 
     ################
     # OpenCV

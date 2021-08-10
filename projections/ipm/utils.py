@@ -73,7 +73,7 @@ def load_camera_params(file):
     R_veh2cam = np.transpose(rotation_from_euler(roll, pitch, yaw))
     T_veh2cam = translation_matrix((-x, -y, -z))
 
-    # Rotate to camera coodinates
+    # Rotate to camera coordinates
     R = np.array([[0., -1., 0., 0.],
                   [0., 0., -1., 0.],
                   [1., 0., 0., 0.],
@@ -173,6 +173,28 @@ def bilinear_sampler(imgs, pix_coords):
     w11 = wt_x1 * wt_y1
     output = w00 * im00 + w01 * im01 + w10 * im10 + w11 * im11
     return output
+
+
+def warped(src_image, pix_coords):
+    """
+    Warp source image using transformed points.
+    """
+    src_h, src_w, src_c = src_image.shape
+    # dst_h, dst_w = dst_size
+    dst_h, dst_w, pix_c = pix_coords.shape
+
+    # Discretize & get points within image frame
+    xpoints, ypoints = pix_coords[..., 0], pix_coords[..., 1]
+    ind = np.where((xpoints >= 0) & (xpoints < src_w) & (ypoints >= 0) & (ypoints < src_h))
+    ypoints, xpoints = ypoints[ind].astype(np.int), xpoints[ind].astype(np.int)
+
+    # Get the corresponding point
+    xpix, ypix = np.meshgrid(np.linspace(0, dst_w - 1, dst_w), np.linspace(0, dst_h - 1, dst_h))
+    ypix, xpix = ypix[ind].astype(int), xpix[ind].astype(int)
+
+    out = np.zeros((dst_h, dst_w, src_c), dtype=src_image.dtype)
+    out[ypix, xpix, :] = src_image[ypoints, xpoints, :]
+    return out
 
 
 class Plane:
