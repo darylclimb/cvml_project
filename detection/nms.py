@@ -148,7 +148,7 @@ def nms(proposals, score, threshold=0.5):
 
 if __name__ == '__main__':
     # Image name
-    image_name = 'gg.jpg'
+    image_name = 'image.jpg'
 
     # Bounding boxes
     bounding_boxes = proposals_boxes
