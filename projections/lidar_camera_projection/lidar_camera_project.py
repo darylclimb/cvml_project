@@ -126,23 +126,3 @@ if __name__ == '__main__':
     # render_image_with_boxes(rgb, labels, calib)
     render_lidar_with_boxes(pc_velo, labels, calib, img_width=img_width, img_height=img_height)
     # render_lidar_on_image(pc_velo, rgb, calib, img_width, img_height)
-
-{
-    "class_name": "ViewTrajectory",
-    "interval": 29,
-    "is_loop": false,
-    "trajectory":
-        [
-            {
-                "boundingbox_max": [76.944000244140625, 20.33799934387207, 2.815000057220459],
-                "boundingbox_min": [-0.12, -19.110000610351562, -1.8450000286102295],
-                "field_of_view": 60.0,
-                "front": [-0.99452074397047185, 0.038735911320214068, 0.09709798652192439],
-                "lookat": [38.41200012207031, 0.61399936676025391, 0.48500001430511475],
-                "up": [0.095457276697515733, -0.042172005434831683, 0.99453980829482069],
-                "zoom": 0.33799999999999963
-            }
-        ],
-    "version_major": 1,
-    "version_minor": 0
-}
