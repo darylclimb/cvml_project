@@ -1,3 +1,5 @@
+import os
+os.environ["OPENCV_IO_ENABLE_OPENEXR"]="1"
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
@@ -20,7 +22,7 @@ pixel_coords = pixel_coord_np(width, height)  # [3, npoints]
 
 # Apply back-projection: K_inv @ pixels * depth
 cam_coords = K_inv[:3, :3] @ pixel_coords * depth.flatten()
-
+colors = rgb.reshape(-1, rgb.shape[-1])
 # back-projection using native for-loop.
 # Uncomment block to test this
 # cam_coords = np.zeros((height * width, 3))
@@ -42,11 +44,12 @@ cam_coords = K_inv[:3, :3] @ pixel_coords * depth.flatten()
 
 
 # Limit points to 150m in the z-direction for visualisation
+colors = colors[np.where(cam_coords[2] <= 150)[0]]
 cam_coords = cam_coords[:, np.where(cam_coords[2] <= 150)[0]]
-
 # Visualize
 pcd_cam = o3d.geometry.PointCloud()
 pcd_cam.points = o3d.utility.Vector3dVector(cam_coords.T[:, :3])
+pcd_cam.colors = o3d.utility.Vector3dVector(colors / 255.)
 # Flip it, otherwise the pointcloud will be upside down
 pcd_cam.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
 o3d.visualization.draw_geometries([pcd_cam])

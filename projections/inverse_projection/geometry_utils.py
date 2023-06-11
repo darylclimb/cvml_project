@@ -7,8 +7,8 @@ def pixel_coord_np(width, height):
     Returns:
         Pixel coordinate:       [3, width * height]
     """
-    x = np.linspace(0, width - 1, width).astype(np.int)
-    y = np.linspace(0, height - 1, height).astype(np.int)
+    x = np.linspace(0, width - 1, width).astype(int)
+    y = np.linspace(0, height - 1, height).astype(int)
     [x, y] = np.meshgrid(x, y)
     return np.vstack((x.flatten(), y.flatten(), np.ones_like(x.flatten())))
 
